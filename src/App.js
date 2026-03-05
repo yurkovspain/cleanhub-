@@ -1430,7 +1430,7 @@ export default function App() {
   ];
 
   return (
-<div style={{ background:COLORS.bg, minHeight:"100vh", fontFamily:FONT, width:"100%", maxWidth:480, margin:"0 auto" }}>
+<div style={{ background:COLORS.bg, minHeight:"100vh", fontFamily:FONT, width:"100%", maxWidth:"100%", margin:"0 auto" }}>
       {/* HEADER */}
       <div style={{ position:"sticky", top:0, zIndex:100, background:`${COLORS.bg}ee`, backdropFilter:"blur(12px)", borderBottom:`1px solid ${COLORS.cardBorder}`, padding:"10px 16px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div style={{ fontWeight:900, fontSize:20, color:COLORS.accent, letterSpacing:-0.5 }}>✨ CleanHub</div>
