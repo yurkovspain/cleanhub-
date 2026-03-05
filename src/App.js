@@ -150,7 +150,7 @@ function LoginScreen({ onLogin }) {
   }
 
   return (
-    <div style={{ minHeight:"100vh", background:COLORS.bg, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", fontFamily:FONT, padding:24 }}>
+    <div style={{ minHeight:"100svh", background:COLORS.bg, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", fontFamily:FONT, padding:24 }}>
       <div style={{ fontSize:36, marginBottom:8 }}>✨</div>
       <div style={{ fontSize:32, fontWeight:900, color:COLORS.text, letterSpacing:-1 }}>CleanHub</div>
       <div style={{ fontSize:13, color:COLORS.muted, marginBottom:36, marginTop:4 }}>Torrevieja · Управление сервисом</div>
