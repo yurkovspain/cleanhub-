@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const COLORS = {
   bg: "#0f1117",
@@ -517,7 +517,7 @@ function SuppliesView({ role }) {
    Font: Playfair Display (headings) + DM Sans (body)
 ───────────────────────────────────────────────────────── */
 
-const C = {
+const OC = {
   bg:       "#f7f4ef",
   surface:  "#ffffff",
   card:     "#ffffff",
@@ -538,9 +538,9 @@ const C = {
   stepTodo: "#d5cfc8",
 };
 
-const FD = `'Playfair Display', Georgia, serif`;
-const FB = `'DM Sans', sans-serif`;
-const FM = `'DM Mono', monospace`;
+const OFD = `'Playfair Display', Georgia, serif`;
+const OFB = `'DM Sans', sans-serif`;
+const OFM = `'DM Mono', monospace`;
 
 /* ─── ONBOARDING STEPS ──────────────────────────────────────────────────── */
 const STEPS = [
@@ -616,42 +616,42 @@ const INIT_PIPELINE = [
 ];
 
 /* ─── UI ATOMS ───────────────────────────────────────────────────────────── */
-function Tag({ label, color = C.accent }) {
+function OTag({ label, color = OC.accent }) {
   return (
     <span style={{ background: `${color}18`, color, border: `1px solid ${color}30`,
       borderRadius: 20, padding: "2px 10px", fontSize: 11, fontWeight: 700,
-      fontFamily: FB, whiteSpace: "nowrap" }}>
+      fontFamily: OFB, whiteSpace: "nowrap" }}>
       {label}
     </span>
   );
 }
 
-function Btn({ children, onClick, variant = "primary", small = false, disabled = false }) {
+function OBtn({ children, onClick, variant = "primary", small = false, disabled = false }) {
   const styles = {
-    primary:  { bg: C.accent,   color: "#fff",     border: C.accent },
-    secondary:{ bg: C.surface,  color: C.accent,   border: C.accent },
-    ghost:    { bg: "transparent", color: C.muted, border: C.border },
-    green:    { bg: C.green,    color: "#fff",     border: C.green  },
-    danger:   { bg: "#fff",     color: C.red,      border: C.red    },
+    primary:  { bg: OC.accent,   color: "#fff",     border: OC.accent },
+    secondary:{ bg: OC.surface,  color: OC.accent,   border: OC.accent },
+    ghost:    { bg: "transparent", color: OC.muted, border: OC.border },
+    green:    { bg: OC.green,    color: "#fff",     border: OC.green  },
+    danger:   { bg: "#fff",     color: OC.red,      border: OC.red    },
   };
   const s = styles[variant] || styles.primary;
   return (
     <button onClick={onClick} disabled={disabled} style={{
-      background: disabled ? C.dim : s.bg,
+      background: disabled ? OC.dim : s.bg,
       color: disabled ? "#fff" : s.color,
-      border: `1.5px solid ${disabled ? C.dim : s.border}`,
+      border: `1.5px solid ${disabled ? OC.dim : s.border}`,
       borderRadius: 10, padding: small ? "6px 14px" : "10px 20px",
-      fontSize: small ? 12 : 14, fontWeight: 700, fontFamily: FB,
+      fontSize: small ? 12 : 14, fontWeight: 700, fontFamily: OFB,
       cursor: disabled ? "default" : "pointer", transition: "all 0.15s",
       whiteSpace: "nowrap",
     }}>{children}</button>
   );
 }
 
-function Card({ children, style = {}, onClick }) {
+function OCard({ children, style = {}, onClick }) {
   return (
     <div onClick={onClick} style={{
-      background: C.card, border: `1px solid ${C.border}`,
+      background: OC.card, border: `1px solid ${C.border}`,
       borderRadius: 16, padding: 20,
       cursor: onClick ? "pointer" : "default",
       boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
@@ -660,22 +660,22 @@ function Card({ children, style = {}, onClick }) {
   );
 }
 
-function Field({ label, children }) {
+function OField({ label, children }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <div style={{ fontSize: 11, color: C.muted, fontWeight: 600, letterSpacing: 0.8,
-        textTransform: "uppercase", fontFamily: FB, marginBottom: 5 }}>{label}</div>
+      <div style={{ fontSize: 11, color: OC.muted, fontWeight: 600, letterSpacing: 0.8,
+        textTransform: "uppercase", fontFamily: OFB, marginBottom: 5 }}>{label}</div>
       {children}
     </div>
   );
 }
 
-const INP = {
-  width: "100%", background: C.bg, border: `1.5px solid ${C.border}`,
-  borderRadius: 9, padding: "10px 12px", color: C.text, fontFamily: FB,
+const OINP = {
+  width: "100%", background: OC.bg, border: `1.5px solid ${C.border}`,
+  borderRadius: 9, padding: "10px 12px", color: OC.text, fontFamily: OFB,
   fontSize: 14, boxSizing: "border-box", outline: "none",
 };
-const TA = { ...INP, minHeight: 80, resize: "vertical" };
+const OTA = { ...OINP, minHeight: 80, resize: "vertical" };
 
 /* ─── STEP PROGRESS BAR ─────────────────────────────────────────────────── */
 function StepBar({ currentStep, completedSteps }) {
@@ -684,26 +684,26 @@ function StepBar({ currentStep, completedSteps }) {
       {STEPS.map((step, i) => {
         const done   = completedSteps.includes(step.id);
         const active = i === currentStep;
-        const color  = done ? C.stepDone : active ? C.stepAct : C.stepTodo;
+        const color  = done ? OC.stepDone : active ? OC.stepAct : OC.stepTodo;
         return (
           <div key={step.id} style={{ display: "flex", alignItems: "center", flex: i < STEPS.length - 1 ? 1 : "none" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 48 }}>
               <div style={{
                 width: 36, height: 36, borderRadius: "50%",
-                background: done ? C.stepDone : active ? C.accentL : "#ede9e4",
+                background: done ? OC.stepDone : active ? OC.accentL : "#ede9e4",
                 border: `2.5px solid ${color}`,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 16, transition: "all 0.3s",
               }}>
-                {done ? <span style={{ color: C.stepDone, fontSize: 16 }}>✓</span> : <span>{step.icon}</span>}
+                {done ? <span style={{ color: OC.stepDone, fontSize: 16 }}>✓</span> : <span>{step.icon}</span>}
               </div>
               <div style={{ fontSize: 10, color, fontWeight: active || done ? 700 : 400,
-                fontFamily: FB, marginTop: 4, textAlign: "center", whiteSpace: "nowrap" }}>
+                fontFamily: OFB, marginTop: 4, textAlign: "center", whiteSpace: "nowrap" }}>
                 {step.label}
               </div>
             </div>
             {i < STEPS.length - 1 && (
-              <div style={{ flex: 1, height: 2, background: done ? C.stepDone : C.stepTodo,
+              <div style={{ flex: 1, height: 2, background: done ? OC.stepDone : OC.stepTodo,
                 margin: "0 2px", marginBottom: 20, minWidth: 12, transition: "background 0.3s" }} />
             )}
           </div>
@@ -722,36 +722,36 @@ function StepInspection({ item, onUpdate, onComplete, readOnly }) {
 
   return (
     <div>
-      <div style={{ fontSize: 13, color: C.muted, marginBottom: 20, fontFamily: FB }}>
+      <div style={{ fontSize: 13, color: OC.muted, marginBottom: 20, fontFamily: OFB }}>
         Менеджер осматривает объект и фиксирует состояние, необходимые работы и фото.
       </div>
-      <Field label="Адрес объекта">
-        <div style={{ ...INP, background: "#f0ede8", color: C.muted }}>{item.address}</div>
-      </Field>
-      <Field label="Заметки по осмотру">
-        <textarea style={TA} value={note} onChange={e => setNote(e.target.value)}
+      <OField label="Адрес объекта">
+        <div style={{ ...INP, background: "#f0ede8", color: OC.muted }}>{item.address}</div>
+      </OField>
+      <OField label="Заметки по осмотру">
+        <textarea style={OTA} value={note} onChange={e => setNote(e.target.value)}
           disabled={readOnly}
           placeholder="Опишите состояние объекта: что нужна уборка, ремонт, количество комнат, санузлов, особенности..." />
-      </Field>
-      <Field label="Фото с осмотра">
+      </OField>
+      <OField label="Фото с осмотра">
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           {Array.from({ length: photos }).map((_, i) => (
-            <div key={i} style={{ width: 64, height: 64, background: C.accentL, borderRadius: 10,
+            <div key={i} style={{ width: 64, height: 64, background: OC.accentL, borderRadius: 10,
               border: `1px solid ${C.border}`, display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: 22 }}>📷</div>
           ))}
           {!readOnly && (
             <button onClick={() => setPhotos(p => p + 1)} style={{
-              width: 64, height: 64, background: C.bg, border: `2px dashed ${C.border}`,
-              borderRadius: 10, cursor: "pointer", fontSize: 22, color: C.dim,
+              width: 64, height: 64, background: OC.bg, border: `2px dashed ${C.border}`,
+              borderRadius: 10, cursor: "pointer", fontSize: 22, color: OC.dim,
             }}>+</button>
           )}
         </div>
-      </Field>
+      </OField>
       {!readOnly && (
-        <Btn onClick={() => { onUpdate({ notes: { ...item.notes, inspection: note }, inspectionPhotos: photos }); onComplete(); }}>
+        <OBtn onClick={() => { onUpdate({ notes: { ...item.notes, inspection: note }, inspectionPhotos: photos }); onComplete(); }}>
           Осмотр завершён →
-        </Btn>
+        </OBtn>
       )}
     </div>
   );
@@ -772,82 +772,82 @@ function StepEstimate({ item, onUpdate, onComplete, readOnly }) {
 
   return (
     <div>
-      <div style={{ fontSize: 13, color: C.muted, marginBottom: 20, fontFamily: FB }}>
+      <div style={{ fontSize: 13, color: OC.muted, marginBottom: 20, fontFamily: OFB }}>
         Формирование сметы для согласования с собственником.
       </div>
 
-      <Field label="Тип первичной уборки">
+      <OField label="Тип первичной уборки">
         <div style={{ display: "flex", gap: 10 }}>
           {[["initial","Первичная (повышенная)"],["standard","Стандартная"]].map(([val, lbl]) => (
             <div key={val} onClick={() => !readOnly && setCleanType(val)} style={{
               flex: 1, padding: "12px 14px", borderRadius: 10, cursor: readOnly ? "default" : "pointer",
-              border: `2px solid ${cleanType === val ? C.accent : C.border}`,
-              background: cleanType === val ? C.accentL : C.bg,
+              border: `2px solid ${cleanType === val ? OC.accent : OC.border}`,
+              background: cleanType === val ? OC.accentL : OC.bg,
             }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: cleanType === val ? C.accent : C.text }}>{lbl}</div>
-              <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>
+              <div style={{ fontWeight: 700, fontSize: 13, color: cleanType === val ? OC.accent : OC.text }}>{lbl}</div>
+              <div style={{ fontSize: 11, color: OC.muted, marginTop: 2 }}>
                 {val === "initial" ? `€${cleanRate}/ч — глубокая очистка` : `€15/ч — обычный стандарт`}
               </div>
             </div>
           ))}
         </div>
-      </Field>
+      </OField>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-        <Field label={`Часов уборки × €${cleanType === "initial" ? cleanRate : 15}/ч`}>
-          <input style={INP} type="number" value={cleanHours}
+        <OField label={`Часов уборки × €${cleanType === "initial" ? cleanRate : 15}/ч`}>
+          <input style={OINP} type="number" value={cleanHours}
             onChange={e => setCleanHours(e.target.value)} disabled={readOnly} />
-        </Field>
-        <Field label="Ежемес. уборка €/раз">
-          <input style={INP} type="number" value={monthlyRate}
+        </OField>
+        <OField label="Ежемес. уборка €/раз">
+          <input style={OINP} type="number" value={monthlyRate}
             onChange={e => setMonthlyRate(e.target.value)} disabled={readOnly} />
-        </Field>
+        </OField>
       </div>
 
-      <Field label="Ремонт / доп. работы (описание)">
-        <input style={INP} value={repairNote} onChange={e => setRepairNote(e.target.value)}
+      <OField label="Ремонт / доп. работы (описание)">
+        <input style={OINP} value={repairNote} onChange={e => setRepairNote(e.target.value)}
           disabled={readOnly} placeholder="Замена лампочек, прочистка фильтров..." />
-      </Field>
-      <Field label="Стоимость доп. работ €">
-        <input style={INP} type="number" value={repairCost}
+      </OField>
+      <OField label="Стоимость доп. работ €">
+        <input style={OINP} type="number" value={repairCost}
           onChange={e => setRepairCost(e.target.value)} disabled={readOnly} placeholder="0" />
-      </Field>
+      </OField>
 
       {/* Summary */}
-      <div style={{ background: C.bg, border: `1.5px solid ${C.border}`, borderRadius: 12,
+      <div style={{ background: OC.bg, border: `1.5px solid ${C.border}`, borderRadius: 12,
         padding: "14px 16px", marginBottom: 20 }}>
-        <div style={{ fontSize: 11, color: C.muted, fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>ИТОГО СМЕТА</div>
+        <div style={{ fontSize: 11, color: OC.muted, fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>ИТОГО СМЕТА</div>
         {[
           [`${cleanType === "initial" ? "Первичная" : "Стандартная"} уборка (${cleanHours}ч)`, cleanCost],
           repairNote && [repairNote, parseFloat(repairCost) || 0],
         ].filter(Boolean).map(([label, cost], i) => (
           <div key={i} style={{ display: "flex", justifyContent: "space-between", fontSize: 13,
-            marginBottom: 6, color: C.text }}>
+            marginBottom: 6, color: OC.text }}>
             <span>{label}</span>
-            <span style={{ fontFamily: FM, fontWeight: 600 }}>€{cost.toFixed(2)}</span>
+            <span style={{ fontFamily: OFM, fontWeight: 600 }}>€{cost.toFixed(2)}</span>
           </div>
         ))}
         <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 10, marginTop: 4,
           display: "flex", justifyContent: "space-between" }}>
           <span style={{ fontWeight: 700, fontSize: 14 }}>Первоначально</span>
-          <span style={{ fontFamily: FM, fontWeight: 800, fontSize: 16, color: C.accent }}>€{total.toFixed(2)}</span>
+          <span style={{ fontFamily: OFM, fontWeight: 800, fontSize: 16, color: OC.accent }}>€{total.toFixed(2)}</span>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 12, color: C.muted }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 12, color: OC.muted }}>
           <span>Обслуживание (каждая уборка)</span>
-          <span style={{ fontFamily: FM }}>€{monthlyRate}/раз</span>
+          <span style={{ fontFamily: OFM }}>€{monthlyRate}/раз</span>
         </div>
       </div>
 
-      <Field label="Комментарий к смете">
-        <textarea style={TA} value={note} onChange={e => setNote(e.target.value)}
+      <OField label="Комментарий к смете">
+        <textarea style={OTA} value={note} onChange={e => setNote(e.target.value)}
           disabled={readOnly} placeholder="Доп. пояснения для собственника..." />
-      </Field>
+      </OField>
 
       {!readOnly && (
-        <Btn onClick={() => {
+        <OBtn onClick={() => {
           onUpdate({ cleanType, cleanHours, monthlyRate, repairNote, repairCost, notes: { ...item.notes, estimate: note } });
           onComplete();
-        }}>Смета согласована →</Btn>
+        }}>Смета согласована →</OBtn>
       )}
     </div>
   );
@@ -861,83 +861,83 @@ function StepContract({ item, onUpdate, onComplete, readOnly }) {
 
   return (
     <div>
-      <div style={{ fontSize: 13, color: C.muted, marginBottom: 20, fontFamily: FB }}>
+      <div style={{ fontSize: 13, color: OC.muted, marginBottom: 20, fontFamily: OFB }}>
         Загрузка договора, подписание сторонами. Собственник видит договор в своём кабинете.
       </div>
 
       {/* Upload */}
-      <Card style={{ marginBottom: 14, borderStyle: uploaded ? "solid" : "dashed",
-        borderColor: uploaded ? C.green : C.border, background: uploaded ? C.greenL : C.bg }}>
+      <OCard style={{ marginBottom: 14, borderStyle: uploaded ? "solid" : "dashed",
+        borderColor: uploaded ? OC.green : OC.border, background: uploaded ? OC.greenL : OC.bg }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: uploaded ? C.green : C.text }}>
+            <div style={{ fontWeight: 700, fontSize: 14, color: uploaded ? OC.green : OC.text }}>
               {uploaded ? "✓ Договор загружен" : "📎 Загрузить договор"}
             </div>
-            <div style={{ fontSize: 12, color: C.muted, marginTop: 3 }}>
+            <div style={{ fontSize: 12, color: OC.muted, marginTop: 3 }}>
               {uploaded ? "Договор_CleanHub_" + item.ownerName.split(" ")[0] + ".pdf" : "PDF формат, подписанный менеджером"}
             </div>
           </div>
           {!readOnly && (
             uploaded
-              ? <Btn small variant="ghost" onClick={() => setUploaded(false)}>Заменить</Btn>
-              : <Btn small onClick={() => setUploaded(true)}>Загрузить</Btn>
+              ? <OBtn small variant="ghost" onClick={() => setUploaded(false)}>Заменить</OBtn>
+              : <OBtn small onClick={() => setUploaded(true)}>Загрузить</OBtn>
           )}
         </div>
-      </Card>
+      </OCard>
 
       {/* Sign status */}
-      <Card style={{ marginBottom: 14, borderColor: signed ? C.green : C.border,
-        background: signed ? C.greenL : C.bg }}>
+      <OCard style={{ marginBottom: 14, borderColor: signed ? OC.green : OC.border,
+        background: signed ? OC.greenL : OC.bg }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: signed ? C.green : C.text }}>
+            <div style={{ fontWeight: 700, fontSize: 14, color: signed ? OC.green : OC.text }}>
               {signed ? "✓ Договор подписан" : "✍ Статус подписания"}
             </div>
-            <div style={{ fontSize: 12, color: C.muted, marginTop: 3 }}>
+            <div style={{ fontSize: 12, color: OC.muted, marginTop: 3 }}>
               {signed ? `Подписан ${new Date().toLocaleDateString("ru")}` : "Ожидает подписи собственника"}
             </div>
           </div>
           {!readOnly && uploaded && (
-            <Btn small variant={signed ? "ghost" : "green"} onClick={() => setSigned(v => !v)}>
+            <OBtn small variant={signed ? "ghost" : "green"} onClick={() => setSigned(v => !v)}>
               {signed ? "Отменить" : "Отметить подписанным"}
-            </Btn>
+            </OBtn>
           )}
         </div>
-      </Card>
+      </OCard>
 
       {/* Owner view preview */}
-      <div style={{ background: C.blueL, border: `1px solid ${C.blue}30`, borderRadius: 12,
+      <div style={{ background: OC.blueL, border: `1px solid ${C.blue}30`, borderRadius: 12,
         padding: "12px 16px", marginBottom: 16 }}>
-        <div style={{ fontSize: 11, color: C.blue, fontWeight: 700, marginBottom: 6 }}>👁 ВИД СОБСТВЕННИКА</div>
-        <div style={{ fontSize: 13, color: C.text }}>
+        <div style={{ fontSize: 11, color: OC.blue, fontWeight: 700, marginBottom: 6 }}>👁 ВИД СОБСТВЕННИКА</div>
+        <div style={{ fontSize: 13, color: OC.text }}>
           {uploaded
             ? `${item.ownerName.split(" ")[0]} видит договор в своём кабинете и может скачать PDF`
             : "Договор ещё не загружен — собственник не видит документ"}
         </div>
         {uploaded && (
           <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
-            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8,
+            <div style={{ background: OC.surface, border: `1px solid ${C.border}`, borderRadius: 8,
               padding: "8px 14px", fontSize: 12, display: "flex", alignItems: "center", gap: 6 }}>
               <span>📄</span>
-              <span style={{ color: C.blue, fontWeight: 600 }}>Скачать договор</span>
+              <span style={{ color: OC.blue, fontWeight: 600 }}>Скачать договор</span>
             </div>
-            <Tag label={signed ? "Подписан" : "Ожидает подписи"} color={signed ? C.green : C.gold} />
+            <OTag label={signed ? "Подписан" : "Ожидает подписи"} color={signed ? OC.green : OC.gold} />
           </div>
         )}
       </div>
 
-      <Field label="Примечания к договору">
-        <textarea style={TA} value={note} onChange={e => setNote(e.target.value)}
+      <OField label="Примечания к договору">
+        <textarea style={OTA} value={note} onChange={e => setNote(e.target.value)}
           disabled={readOnly} placeholder="Особые условия, дата подписания, способ..." />
-      </Field>
+      </OField>
 
       {!readOnly && (
-        <Btn disabled={!uploaded || !signed}
+        <OBtn disabled={!uploaded || !signed}
           onClick={() => { onUpdate({ contractUploaded: uploaded, contractSigned: signed, notes: { ...item.notes, contract: note } }); onComplete(); }}>
           Договор оформлен →
-        </Btn>
+        </OBtn>
       )}
-      {!uploaded && <div style={{ fontSize: 12, color: C.muted, marginTop: 8 }}>Сначала загрузите и отметьте договор подписанным</div>}
+      {!uploaded && <div style={{ fontSize: 12, color: OC.muted, marginTop: 8 }}>Сначала загрузите и отметьте договор подписанным</div>}
     </div>
   );
 }
@@ -954,20 +954,20 @@ function StepPrep({ item, onUpdate, onComplete, readOnly }) {
 
   return (
     <div>
-      <div style={{ fontSize: 13, color: C.muted, marginBottom: 20, fontFamily: FB }}>
+      <div style={{ fontSize: 13, color: OC.muted, marginBottom: 20, fontFamily: OFB }}>
         Первичная уборка до стандарта компании + выполнение доп. работ по смете.
       </div>
 
-      <Field label="Назначить клинера">
-        <select style={INP} value={assignedTo} onChange={e => setAssignedTo(e.target.value)} disabled={readOnly}>
+      <OField label="Назначить клинера">
+        <select style={OINP} value={assignedTo} onChange={e => setAssignedTo(e.target.value)} disabled={readOnly}>
           {["Мария К.", "Иван С.", "Анна (менеджер)"].map(n => <option key={n}>{n}</option>)}
         </select>
-      </Field>
+      </OField>
 
       {/* Checklist */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 11, color: C.muted, fontWeight: 600, letterSpacing: 0.8,
-          textTransform: "uppercase", fontFamily: FB, marginBottom: 10 }}>ЧЕКЛИСТ</div>
+        <div style={{ fontSize: 11, color: OC.muted, fontWeight: 600, letterSpacing: 0.8,
+          textTransform: "uppercase", fontFamily: OFB, marginBottom: 10 }}>ЧЕКЛИСТ</div>
         {[
           [cleanDone, setCleanDone, "🧹", `Первичная уборка выполнена (${item.cleanType === "initial" ? "углублённая" : "стандартная"}, ${item.cleanHours || "3"}ч)`],
           item.repairNote && [repairDone, setRepairDone, "🔧", `Доп. работы: ${item.repairNote}`],
@@ -975,11 +975,11 @@ function StepPrep({ item, onUpdate, onComplete, readOnly }) {
           <div key={i} onClick={() => !readOnly && setDone(v => !v)} style={{
             display: "flex", alignItems: "center", gap: 12, padding: "12px 16px",
             borderRadius: 10, marginBottom: 8, cursor: readOnly ? "default" : "pointer",
-            background: done ? C.greenL : C.bg,
-            border: `1.5px solid ${done ? C.green : C.border}`,
+            background: done ? OC.greenL : OC.bg,
+            border: `1.5px solid ${done ? OC.green : OC.border}`,
           }}>
             <div style={{ width: 22, height: 22, borderRadius: "50%",
-              background: done ? C.green : "#fff", border: `2px solid ${done ? C.green : C.dim}`,
+              background: done ? OC.green : "#fff", border: `2px solid ${done ? OC.green : OC.dim}`,
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0, fontSize: 12, color: "#fff", fontWeight: 700 }}>
               {done ? "✓" : ""}
@@ -989,32 +989,32 @@ function StepPrep({ item, onUpdate, onComplete, readOnly }) {
         ))}
       </div>
 
-      <Field label="Фото результата">
+      <OField label="Фото результата">
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {Array.from({ length: photos }).map((_, i) => (
-            <div key={i} style={{ width: 64, height: 64, background: C.greenL, borderRadius: 10,
+            <div key={i} style={{ width: 64, height: 64, background: OC.greenL, borderRadius: 10,
               border: `1px solid ${C.green}40`, display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: 22 }}>📷</div>
           ))}
           {!readOnly && (
             <button onClick={() => setPhotos(p => p + 1)} style={{
-              width: 64, height: 64, background: C.bg, border: `2px dashed ${C.border}`,
-              borderRadius: 10, cursor: "pointer", fontSize: 22, color: C.dim,
+              width: 64, height: 64, background: OC.bg, border: `2px dashed ${C.border}`,
+              borderRadius: 10, cursor: "pointer", fontSize: 22, color: OC.dim,
             }}>+</button>
           )}
         </div>
-      </Field>
+      </OField>
 
-      <Field label="Отчёт по подготовке">
-        <textarea style={TA} value={note} onChange={e => setNote(e.target.value)}
+      <OField label="Отчёт по подготовке">
+        <textarea style={OTA} value={note} onChange={e => setNote(e.target.value)}
           disabled={readOnly} placeholder="Что сделано, замечания, рекомендации..." />
-      </Field>
+      </OField>
 
       {!readOnly && (
-        <Btn disabled={!canComplete} onClick={() => {
+        <OBtn disabled={!canComplete} onClick={() => {
           onUpdate({ prepCleanDone: cleanDone, prepRepairDone: repairDone, prepPhotos: photos, prepAssignedTo: assignedTo, notes: { ...item.notes, prep: note } });
           onComplete();
-        }}>Подготовка завершена →</Btn>
+        }}>Подготовка завершена →</OBtn>
       )}
     </div>
   );
@@ -1030,65 +1030,65 @@ function StepKeys({ item, onUpdate, onComplete, readOnly }) {
 
   return (
     <div>
-      <div style={{ fontSize: 13, color: C.muted, marginBottom: 20, fontFamily: FB }}>
+      <div style={{ fontSize: 13, color: OC.muted, marginBottom: 20, fontFamily: OFB }}>
         Получение ключей и всех данных для доступа к объекту.
       </div>
 
-      <Field label="Способ входа">
+      <OField label="Способ входа">
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {[["key","🔑 Ключи"],["code","🔢 Код"],["card","💳 Карта"],["app","📱 Приложение"]].map(([val,lbl]) => (
             <div key={val} onClick={() => !readOnly && setEntryMethod(val)} style={{
               padding: "8px 14px", borderRadius: 8, cursor: readOnly ? "default" : "pointer",
-              border: `2px solid ${entryMethod === val ? C.accent : C.border}`,
-              background: entryMethod === val ? C.accentL : C.bg,
+              border: `2px solid ${entryMethod === val ? OC.accent : OC.border}`,
+              background: entryMethod === val ? OC.accentL : OC.bg,
               fontSize: 13, fontWeight: entryMethod === val ? 700 : 400,
-              color: entryMethod === val ? C.accent : C.text,
+              color: entryMethod === val ? OC.accent : OC.text,
             }}>{lbl}</div>
           ))}
         </div>
-      </Field>
+      </OField>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-        <Field label="Количество комплектов ключей">
-          <input style={INP} type="number" value={keyCount}
+        <OField label="Количество комплектов ключей">
+          <input style={OINP} type="number" value={keyCount}
             onChange={e => setKeyCount(e.target.value)} disabled={readOnly} />
-        </Field>
-        <Field label="Код / PIN">
-          <input style={INP} value={accessCode}
+        </OField>
+        <OField label="Код / PIN">
+          <input style={OINP} value={accessCode}
             onChange={e => setAccessCode(e.target.value)}
             disabled={readOnly} placeholder="Домофон, кодовый замок..." />
-        </Field>
+        </OField>
       </div>
 
-      <Card style={{ marginBottom: 16, borderColor: received ? C.green : C.border,
-        background: received ? C.greenL : C.bg }}>
+      <OCard style={{ marginBottom: 16, borderColor: received ? OC.green : OC.border,
+        background: received ? OC.greenL : OC.bg }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: received ? C.green : C.text }}>
+            <div style={{ fontWeight: 700, fontSize: 14, color: received ? OC.green : OC.text }}>
               {received ? "✓ Ключи получены" : "🔑 Ключи ещё не получены"}
             </div>
-            <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
+            <div style={{ fontSize: 12, color: OC.muted, marginTop: 2 }}>
               {received ? `${keyCount} комплект(а) · ${new Date().toLocaleDateString("ru")}` : "Отметьте после физического получения"}
             </div>
           </div>
           {!readOnly && (
-            <Btn small variant={received ? "ghost" : "green"} onClick={() => setReceived(v => !v)}>
+            <OBtn small variant={received ? "ghost" : "green"} onClick={() => setReceived(v => !v)}>
               {received ? "Отменить" : "Получены ✓"}
-            </Btn>
+            </OBtn>
           )}
         </div>
-      </Card>
+      </OCard>
 
-      <Field label="Примечания к доступу">
-        <textarea style={TA} value={note} onChange={e => setNote(e.target.value)}
+      <OField label="Примечания к доступу">
+        <textarea style={OTA} value={note} onChange={e => setNote(e.target.value)}
           disabled={readOnly} placeholder="Особенности входа, парковка, соседи, консьерж..." />
-      </Field>
+      </OField>
 
       {!readOnly && (
-        <Btn disabled={!received} onClick={() => {
+        <OBtn disabled={!received} onClick={() => {
           onUpdate({ keyReceived: received, keyCount, accessCode, entryMethod, notes: { ...item.notes, keys: note } });
           onComplete();
-        }}>Ключи переданы →</Btn>
+        }}>Ключи переданы →</OBtn>
       )}
     </div>
   );
@@ -1100,10 +1100,10 @@ function StepActive({ item }) {
     <div>
       <div style={{ textAlign: "center", padding: "20px 0 30px" }}>
         <div style={{ fontSize: 56, marginBottom: 12 }}>🎉</div>
-        <div style={{ fontSize: 24, fontWeight: 800, color: C.green, fontFamily: FD, marginBottom: 8 }}>
+        <div style={{ fontSize: 24, fontWeight: 800, color: OC.green, fontFamily: OFD, marginBottom: 8 }}>
           Объект принят!
         </div>
-        <div style={{ fontSize: 14, color: C.muted, maxWidth: 320, margin: "0 auto" }}>
+        <div style={{ fontSize: 14, color: OC.muted, maxWidth: 320, margin: "0 auto" }}>
           {item.address} успешно добавлен в систему и распределён по клинерам
         </div>
       </div>
@@ -1115,16 +1115,16 @@ function StepActive({ item }) {
           ["🔑", "Способ входа", item.entryMethod === "key" ? "Ключи" : item.entryMethod === "code" ? "Код" : item.entryMethod || "Ключи"],
           ["🧹", "Обслуживание", `€${item.monthlyRate || 45}/уборка`],
         ].map(([icon, label, value]) => (
-          <Card key={label} style={{ padding: "14px 16px" }}>
+          <OCard key={label} style={{ padding: "14px 16px" }}>
             <div style={{ fontSize: 18, marginBottom: 4 }}>{icon}</div>
-            <div style={{ fontSize: 11, color: C.muted, marginBottom: 2 }}>{label}</div>
+            <div style={{ fontSize: 11, color: OC.muted, marginBottom: 2 }}>{label}</div>
             <div style={{ fontSize: 14, fontWeight: 700 }}>{value}</div>
-          </Card>
+          </OCard>
         ))}
       </div>
 
-      <Card style={{ background: C.greenL, borderColor: `${C.green}40` }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: C.green, marginBottom: 10 }}>✓ Выполнено в рамках онбординга</div>
+      <OCard style={{ background: OC.greenL, borderColor: `${OC.green}40` }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: OC.green, marginBottom: 10 }}>✓ Выполнено в рамках онбординга</div>
         {[
           item.notes.inspection && "🔍 Осмотр и фотофиксация",
           item.notes.estimate   && "📋 Смета согласована",
@@ -1132,9 +1132,9 @@ function StepActive({ item }) {
           item.prepCleanDone    && "🧹 Первичная уборка",
           item.keyReceived      && `🔑 Ключи получены (${item.keyCount || 2} компл.)`,
         ].filter(Boolean).map((txt, i) => (
-          <div key={i} style={{ fontSize: 13, color: C.text, marginBottom: 4 }}>✓ {txt}</div>
+          <div key={i} style={{ fontSize: 13, color: OC.text, marginBottom: 4 }}>✓ {txt}</div>
         ))}
-      </Card>
+      </OCard>
     </div>
   );
 }
@@ -1148,30 +1148,30 @@ function PipelineCard({ item, onClick }) {
   const pct = Math.round((item.completedSteps.length / STEPS.length) * 100);
 
   return (
-    <Card onClick={onClick} style={{ cursor: "pointer", marginBottom: 12,
-      borderLeft: `4px solid ${stepIdx === STEPS.length - 1 ? C.green : C.accent}` }}>
+    <OCard onClick={onClick} style={{ cursor: "pointer", marginBottom: 12,
+      borderLeft: `4px solid ${stepIdx === STEPS.length - 1 ? OC.green : OC.accent}` }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 15, color: C.text, fontFamily: FD }}>{item.ownerName}</div>
-          <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{item.address}</div>
+          <div style={{ fontWeight: 700, fontSize: 15, color: OC.text, fontFamily: OFD }}>{item.ownerName}</div>
+          <div style={{ fontSize: 12, color: OC.muted, marginTop: 2 }}>{item.address}</div>
         </div>
-        <Tag label={item.type} color={C.gold} />
+        <OTag label={item.type} color={C.gold} />
       </div>
 
       {/* Progress bar */}
-      <div style={{ height: 5, background: C.border, borderRadius: 4, marginBottom: 8 }}>
+      <div style={{ height: 5, background: OC.border, borderRadius: 4, marginBottom: 8 }}>
         <div style={{ height: "100%", width: `${pct}%`, borderRadius: 4,
-          background: stepIdx === STEPS.length - 1 ? C.green : C.accent,
+          background: stepIdx === STEPS.length - 1 ? OC.green : OC.accent,
           transition: "width 0.4s ease" }} />
       </div>
 
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12 }}>
-        <span style={{ color: stepIdx === STEPS.length - 1 ? C.green : C.accent, fontWeight: 600 }}>
+        <span style={{ color: stepIdx === STEPS.length - 1 ? OC.green : OC.accent, fontWeight: 600 }}>
           {step.icon} {step.label}
         </span>
-        <span style={{ color: C.muted }}>{pct}% готово · {item.createdAt}</span>
+        <span style={{ color: OC.muted }}>{pct}% готово · {item.createdAt}</span>
       </div>
-    </Card>
+    </OCard>
   );
 }
 
@@ -1191,33 +1191,33 @@ function NewObjectForm({ onSave, onCancel }) {
 
   return (
     <div>
-      <div style={{ fontSize: 22, fontWeight: 800, fontFamily: FD, color: C.text, marginBottom: 20 }}>
+      <div style={{ fontSize: 22, fontWeight: 800, fontFamily: OFD, color: OC.text, marginBottom: 20 }}>
         Новый объект
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-        <Field label="Имя собственника">
-          <input style={INP} value={form.ownerName} onChange={e => f("ownerName", e.target.value)} placeholder="Имя Фамилия" />
-        </Field>
-        <Field label="Тип объекта">
-          <select style={INP} value={form.type} onChange={e => f("type", e.target.value)}>
+        <OField label="Имя собственника">
+          <input style={OINP} value={form.ownerName} onChange={e => f("ownerName", e.target.value)} placeholder="Имя Фамилия" />
+        </OField>
+        <OField label="Тип объекта">
+          <select style={OINP} value={form.type} onChange={e => f("type", e.target.value)}>
             {["Studio","1BR","2BR","3BR","3BR Villa","4BR+"].map(t => <option key={t}>{t}</option>)}
           </select>
-        </Field>
+        </OField>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-        <Field label="Телефон">
-          <input style={INP} value={form.ownerPhone} onChange={e => f("ownerPhone", e.target.value)} placeholder="+34 6xx xxx xxx" />
-        </Field>
-        <Field label="Email">
-          <input style={INP} value={form.ownerEmail} onChange={e => f("ownerEmail", e.target.value)} placeholder="email@domain.com" />
-        </Field>
+        <OField label="Телефон">
+          <input style={OINP} value={form.ownerPhone} onChange={e => f("ownerPhone", e.target.value)} placeholder="+34 6xx xxx xxx" />
+        </OField>
+        <OField label="Email">
+          <input style={OINP} value={form.ownerEmail} onChange={e => f("ownerEmail", e.target.value)} placeholder="email@domain.com" />
+        </OField>
       </div>
-      <Field label="Адрес объекта">
-        <input style={INP} value={form.address} onChange={e => f("address", e.target.value)} placeholder="Улица, номер, квартира, город" />
-      </Field>
+      <OField label="Адрес объекта">
+        <input style={OINP} value={form.address} onChange={e => f("address", e.target.value)} placeholder="Улица, номер, квартира, город" />
+      </OField>
       <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
-        <Btn onClick={save} disabled={!form.ownerName || !form.address}>Создать и начать онбординг</Btn>
-        <Btn variant="ghost" onClick={onCancel}>Отмена</Btn>
+        <OBtn onClick={save} disabled={!form.ownerName || !form.address}>Создать и начать онбординг</OBtn>
+        <OBtn variant="ghost" onClick={onCancel}>Отмена</OBtn>
       </div>
     </div>
   );
@@ -1248,20 +1248,20 @@ function OnboardingDetail({ item, onBack, onUpdate }) {
   return (
     <div>
       {/* Back */}
-      <button onClick={onBack} style={{ background: "none", border: "none", color: C.muted,
-        cursor: "pointer", fontFamily: FB, fontSize: 13, marginBottom: 16, padding: 0,
+      <button onClick={onBack} style={{ background: "none", border: "none", color: OC.muted,
+        cursor: "pointer", fontFamily: OFB, fontSize: 13, marginBottom: 16, padding: 0,
         display: "flex", alignItems: "center", gap: 4 }}>
         ← Все объекты
       </button>
 
       {/* Header */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, color: C.muted, fontFamily: FB, marginBottom: 4 }}>ОНБОРДИНГ</div>
-        <div style={{ fontSize: 24, fontWeight: 800, fontFamily: FD, color: C.text }}>{item.ownerName}</div>
-        <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{item.address}</div>
+        <div style={{ fontSize: 11, color: OC.muted, fontFamily: OFB, marginBottom: 4 }}>ОНБОРДИНГ</div>
+        <div style={{ fontSize: 24, fontWeight: 800, fontFamily: OFD, color: OC.text }}>{item.ownerName}</div>
+        <div style={{ fontSize: 13, color: OC.muted, marginTop: 2 }}>{item.address}</div>
         <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <Tag label={item.type} color={C.gold} />
-          <Tag label={`С ${item.createdAt}`} color={C.muted} />
+          <OTag label={item.type} color={C.gold} />
+          <OTag label={`С ${item.createdAt}`} color={C.muted} />
         </div>
       </div>
 
@@ -1278,11 +1278,11 @@ function OnboardingDetail({ item, onBack, onUpdate }) {
             <button key={step.id} onClick={() => !locked && setActiveStep(i)}
               disabled={locked}
               style={{
-                background: active ? C.accent : done ? C.greenL : C.bg,
-                color: active ? "#fff" : done ? C.green : locked ? C.dim : C.text,
-                border: `1.5px solid ${active ? C.accent : done ? C.green : C.border}`,
+                background: active ? OC.accent : done ? OC.greenL : OC.bg,
+                color: active ? "#fff" : done ? OC.green : locked ? OC.dim : OC.text,
+                border: `1.5px solid ${active ? OC.accent : done ? OC.green : OC.border}`,
                 borderRadius: 8, padding: "6px 14px", fontSize: 12, fontWeight: 600,
-                cursor: locked ? "default" : "pointer", fontFamily: FB, whiteSpace: "nowrap",
+                cursor: locked ? "default" : "pointer", fontFamily: OFB, whiteSpace: "nowrap",
               }}>
               {step.icon} {step.label} {done ? "✓" : ""}
             </button>
@@ -1291,13 +1291,13 @@ function OnboardingDetail({ item, onBack, onUpdate }) {
       </div>
 
       {/* Active step label */}
-      <div style={{ fontSize: 18, fontWeight: 700, fontFamily: FD, color: C.text, marginBottom: 4 }}>
+      <div style={{ fontSize: 18, fontWeight: 700, fontFamily: OFD, color: OC.text, marginBottom: 4 }}>
         {STEPS[activeStep]?.icon} {STEPS[activeStep]?.label}
       </div>
-      <div style={{ fontSize: 12, color: C.muted, marginBottom: 20 }}>{STEPS[activeStep]?.short}</div>
+      <div style={{ fontSize: 12, color: OC.muted, marginBottom: 20 }}>{STEPS[activeStep]?.short}</div>
       {isCompletedStep && !isCurrentStep && (
-        <div style={{ background: C.greenL, border: `1px solid ${C.green}30`, borderRadius: 8,
-          padding: "8px 14px", marginBottom: 16, fontSize: 12, color: C.green, fontWeight: 600 }}>
+        <div style={{ background: OC.greenL, border: `1px solid ${C.green}30`, borderRadius: 8,
+          padding: "8px 14px", marginBottom: 16, fontSize: 12, color: OC.green, fontWeight: 600 }}>
           ✓ Этот шаг завершён
         </div>
       )}
@@ -1330,11 +1330,11 @@ function OnboardingView() {
   const selItem  = selected ? pipeline.find(i => i.id === selected.id) : null;
 
   return (
-    <div style={{ fontFamily: FB, color: C.text }}>
+    <div style={{ fontFamily: OFB, color: OC.text }}>
       <div style={{ marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ fontSize: 16, fontWeight: 800, color: COLORS.text }}>Онбординг объектов</div>
         {!selItem && !showNew && (
-          <button onClick={() => setShowNew(true)} style={{ background: C.accent, color: "#fff", border: "none", borderRadius: 10, padding: "7px 16px", fontWeight: 700, cursor: "pointer", fontFamily: FB, fontSize: 13 }}>+ Новый</button>
+          <button onClick={() => setShowNew(true)} style={{ background: OC.accent, color: "#fff", border: "none", borderRadius: 10, padding: "7px 16px", fontWeight: 700, cursor: "pointer", fontFamily: OFB, fontSize: 13 }}>+ Новый</button>
         )}
       </div>
       <div>
@@ -1347,15 +1347,15 @@ function OnboardingView() {
             {/* Stats */}
             <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
               {[
-                ["🔄", "В процессе",  active.length, C.accent],
-                ["✅", "Активированы", done.length,   C.green],
-                ["📊", "Всего",        pipeline.length, C.blue],
+                ["🔄", "В процессе",  active.length, OC.accent],
+                ["✅", "Активированы", done.length,   OC.green],
+                ["📊", "Всего",        pipeline.length, OC.blue],
               ].map(([icon, label, val, color]) => (
-                <div key={label} style={{ background: C.surface, border: `1px solid ${C.border}`,
+                <div key={label} style={{ background: OC.surface, border: `1px solid ${C.border}`,
                   borderRadius: 14, padding: "14px 16px", flex: 1, boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
                   <div style={{ fontSize: 18 }}>{icon}</div>
-                  <div style={{ fontSize: 24, fontWeight: 800, color, fontFamily: FM }}>{val}</div>
-                  <div style={{ fontSize: 11, color: C.muted }}>{label}</div>
+                  <div style={{ fontSize: 24, fontWeight: 800, color, fontFamily: OFM }}>{val}</div>
+                  <div style={{ fontSize: 11, color: OC.muted }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -1363,7 +1363,7 @@ function OnboardingView() {
             {/* Active pipeline */}
             {active.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, color: C.muted, letterSpacing: 2,
+                <div style={{ fontSize: 11, fontWeight: 700, color: OC.muted, letterSpacing: 2,
                   textTransform: "uppercase", marginBottom: 12 }}>В ПРОЦЕССЕ ОНБОРДИНГА</div>
                 {active.map(item => (
                   <PipelineCard key={item.id} item={item} onClick={() => setSelected(item)} />
@@ -1374,7 +1374,7 @@ function OnboardingView() {
             {/* Done */}
             {done.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, color: C.muted, letterSpacing: 2,
+                <div style={{ fontSize: 11, fontWeight: 700, color: OC.muted, letterSpacing: 2,
                   textTransform: "uppercase", marginBottom: 12, marginTop: 28 }}>АКТИВИРОВАНЫ</div>
                 {done.map(item => (
                   <PipelineCard key={item.id} item={item} onClick={() => setSelected(item)} />
