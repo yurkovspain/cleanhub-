@@ -651,7 +651,7 @@ function OBtn({ children, onClick, variant = "primary", small = false, disabled 
 function OCard({ children, style = {}, onClick }) {
   return (
     <div onClick={onClick} style={{
-      background: OC.card, border: `1px solid ${C.border}`,
+      background: OC.card, border: `1px solid ${OC.border}`,
       borderRadius: 16, padding: 20,
       cursor: onClick ? "pointer" : "default",
       boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
@@ -671,7 +671,7 @@ function OField({ label, children }) {
 }
 
 const OINP = {
-  width: "100%", background: OC.bg, border: `1.5px solid ${C.border}`,
+  width: "100%", background: OC.bg, border: `1.5px solid ${OC.border}`,
   borderRadius: 9, padding: "10px 12px", color: OC.text, fontFamily: OFB,
   fontSize: 14, boxSizing: "border-box", outline: "none",
 };
@@ -737,12 +737,12 @@ function StepInspection({ item, onUpdate, onComplete, readOnly }) {
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           {Array.from({ length: photos }).map((_, i) => (
             <div key={i} style={{ width: 64, height: 64, background: OC.accentL, borderRadius: 10,
-              border: `1px solid ${C.border}`, display: "flex", alignItems: "center",
+              border: `1px solid ${OC.border}`, display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: 22 }}>📷</div>
           ))}
           {!readOnly && (
             <button onClick={() => setPhotos(p => p + 1)} style={{
-              width: 64, height: 64, background: OC.bg, border: `2px dashed ${C.border}`,
+              width: 64, height: 64, background: OC.bg, border: `2px dashed ${OC.border}`,
               borderRadius: 10, cursor: "pointer", fontSize: 22, color: OC.dim,
             }}>+</button>
           )}
@@ -814,7 +814,7 @@ function StepEstimate({ item, onUpdate, onComplete, readOnly }) {
       </OField>
 
       {/* Summary */}
-      <div style={{ background: OC.bg, border: `1.5px solid ${C.border}`, borderRadius: 12,
+      <div style={{ background: OC.bg, border: `1.5px solid ${OC.border}`, borderRadius: 12,
         padding: "14px 16px", marginBottom: 20 }}>
         <div style={{ fontSize: 11, color: OC.muted, fontWeight: 700, letterSpacing: 1, marginBottom: 10 }}>ИТОГО СМЕТА</div>
         {[
@@ -827,7 +827,7 @@ function StepEstimate({ item, onUpdate, onComplete, readOnly }) {
             <span style={{ fontFamily: OFM, fontWeight: 600 }}>€{cost.toFixed(2)}</span>
           </div>
         ))}
-        <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 10, marginTop: 4,
+        <div style={{ borderTop: `1px solid ${OC.border}`, paddingTop: 10, marginTop: 4,
           display: "flex", justifyContent: "space-between" }}>
           <span style={{ fontWeight: 700, fontSize: 14 }}>Первоначально</span>
           <span style={{ fontFamily: OFM, fontWeight: 800, fontSize: 16, color: OC.accent }}>€{total.toFixed(2)}</span>
@@ -906,7 +906,7 @@ function StepContract({ item, onUpdate, onComplete, readOnly }) {
       </OCard>
 
       {/* Owner view preview */}
-      <div style={{ background: OC.blueL, border: `1px solid ${C.blue}30`, borderRadius: 12,
+      <div style={{ background: OC.blueL, border: `1px solid ${OC.blue}30`, borderRadius: 12,
         padding: "12px 16px", marginBottom: 16 }}>
         <div style={{ fontSize: 11, color: OC.blue, fontWeight: 700, marginBottom: 6 }}>👁 ВИД СОБСТВЕННИКА</div>
         <div style={{ fontSize: 13, color: OC.text }}>
@@ -916,7 +916,7 @@ function StepContract({ item, onUpdate, onComplete, readOnly }) {
         </div>
         {uploaded && (
           <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
-            <div style={{ background: OC.surface, border: `1px solid ${C.border}`, borderRadius: 8,
+            <div style={{ background: OC.surface, border: `1px solid ${OC.border}`, borderRadius: 8,
               padding: "8px 14px", fontSize: 12, display: "flex", alignItems: "center", gap: 6 }}>
               <span>📄</span>
               <span style={{ color: OC.blue, fontWeight: 600 }}>Скачать договор</span>
@@ -993,12 +993,12 @@ function StepPrep({ item, onUpdate, onComplete, readOnly }) {
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {Array.from({ length: photos }).map((_, i) => (
             <div key={i} style={{ width: 64, height: 64, background: OC.greenL, borderRadius: 10,
-              border: `1px solid ${C.green}40`, display: "flex", alignItems: "center",
+              border: `1px solid ${OC.green}40`, display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: 22 }}>📷</div>
           ))}
           {!readOnly && (
             <button onClick={() => setPhotos(p => p + 1)} style={{
-              width: 64, height: 64, background: OC.bg, border: `2px dashed ${C.border}`,
+              width: 64, height: 64, background: OC.bg, border: `2px dashed ${OC.border}`,
               borderRadius: 10, cursor: "pointer", fontSize: 22, color: OC.dim,
             }}>+</button>
           )}
@@ -1155,7 +1155,7 @@ function PipelineCard({ item, onClick }) {
           <div style={{ fontWeight: 700, fontSize: 15, color: OC.text, fontFamily: OFD }}>{item.ownerName}</div>
           <div style={{ fontSize: 12, color: OC.muted, marginTop: 2 }}>{item.address}</div>
         </div>
-        <OTag label={item.type} color={C.gold} />
+        <OTag label={item.type} color={OC.gold} />
       </div>
 
       {/* Progress bar */}
@@ -1260,8 +1260,8 @@ function OnboardingDetail({ item, onBack, onUpdate }) {
         <div style={{ fontSize: 24, fontWeight: 800, fontFamily: OFD, color: OC.text }}>{item.ownerName}</div>
         <div style={{ fontSize: 13, color: OC.muted, marginTop: 2 }}>{item.address}</div>
         <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <OTag label={item.type} color={C.gold} />
-          <OTag label={`С ${item.createdAt}`} color={C.muted} />
+          <OTag label={item.type} color={OC.gold} />
+          <OTag label={`С ${item.createdAt}`} color={OC.muted} />
         </div>
       </div>
 
@@ -1296,7 +1296,7 @@ function OnboardingDetail({ item, onBack, onUpdate }) {
       </div>
       <div style={{ fontSize: 12, color: OC.muted, marginBottom: 20 }}>{STEPS[activeStep]?.short}</div>
       {isCompletedStep && !isCurrentStep && (
-        <div style={{ background: OC.greenL, border: `1px solid ${C.green}30`, borderRadius: 8,
+        <div style={{ background: OC.greenL, border: `1px solid ${OC.green}30`, borderRadius: 8,
           padding: "8px 14px", marginBottom: 16, fontSize: 12, color: OC.green, fontWeight: 600 }}>
           ✓ Этот шаг завершён
         </div>
@@ -1351,7 +1351,7 @@ function OnboardingView() {
                 ["✅", "Активированы", done.length,   OC.green],
                 ["📊", "Всего",        pipeline.length, OC.blue],
               ].map(([icon, label, val, color]) => (
-                <div key={label} style={{ background: OC.surface, border: `1px solid ${C.border}`,
+                <div key={label} style={{ background: OC.surface, border: `1px solid ${OC.border}`,
                   borderRadius: 14, padding: "14px 16px", flex: 1, boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
                   <div style={{ fontSize: 18 }}>{icon}</div>
                   <div style={{ fontSize: 24, fontWeight: 800, color, fontFamily: OFM }}>{val}</div>
