@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const COLORS = {
   bg: "#0f1117",
@@ -38,19 +38,36 @@ const ACCOUNTS = {
     roles: ["cleaner"],
     defaultRole: "cleaner",
   },
+  admin: {
+    id: "admin", name: "Admin", avatar: "AD", password: "admin",
+    roles: ["admin"],
+    defaultRole: "admin",
+    system: true,
+  },
   ivan: {
     id: "ivan", name: "Иван С.", avatar: "ИС", password: "1234",
-    roles: ["cleaner", "manager"],  // клинер, которому можно передать полномочия менеджера
+    roles: ["cleaner", "manager"],
     defaultRole: "cleaner",
   },
 };
 
 // Маппинг account.id → старый uid для задач/объектов
 const ACCOUNT_TO_UID = {
-  anna: "m1", carlos: "o1", elena: "o2", maria: "c1", ivan: "c2",
+  anna: "m1", carlos: "o1", elena: "o2", maria: "c1", ivan: "c2", admin: "a0",
 };
 
+// Начальный список пользователей для управления
+const INITIAL_USERS = [
+  { id:"admin",  name:"Admin",       avatar:"AD", login:"admin",  password:"admin", role:"admin",   active:true, system:true },
+  { id:"anna",   name:"Анна М.",     avatar:"АМ", login:"anna",   password:"1234",  role:"manager", active:true },
+  { id:"carlos", name:"Carlos Ruiz", avatar:"CR", login:"carlos", password:"1234",  role:"owner",   active:true },
+  { id:"elena",  name:"Elena Popova",avatar:"EP", login:"elena",  password:"1234",  role:"owner",   active:true },
+  { id:"maria",  name:"Мария К.",    avatar:"МК", login:"maria",  password:"1234",  role:"cleaner", active:true },
+  { id:"ivan",   name:"Иван С.",     avatar:"ИС", login:"ivan",   password:"1234",  role:"cleaner", active:true },
+];
+
 const ROLE_META = {
+  admin:   { label: "Админ",       icon: "⚙️",  color: COLORS.purple  },
   manager: { label: "Менеджер",    icon: "👩‍💼", color: COLORS.accent  },
   owner:   { label: "Собственник", icon: "🏠",  color: COLORS.green   },
   cleaner: { label: "Клинер",      icon: "🧹",  color: COLORS.orange  },
@@ -136,12 +153,23 @@ function Btn({ children, onClick, color=COLORS.accent, ghost=false, full=false, 
 }
 
 // ─── LOGIN SCREEN ─────────────────────────────────────────────────────────────
-function LoginScreen({ onLogin }) {
+function LoginScreen({ onLogin, users }) {
   const [login, setLogin]       = useState("");
   const [password, setPassword] = useState("");
   const [error, setError]       = useState("");
 
   function handleLogin() {
+    // Check against dynamic users list first
+    const dynUser = (users||[]).find(u => u.login === login.trim().toLowerCase());
+    if (dynUser) {
+      if (!dynUser.active) { setError("Аккаунт деактивирован"); return; }
+      if (dynUser.password !== password) { setError("Неверный пароль"); return; }
+      setError("");
+      const acc = { id: dynUser.id, name: dynUser.name, avatar: dynUser.avatar, roles: [dynUser.role], defaultRole: dynUser.role };
+      onLogin(acc, dynUser.role);
+      return;
+    }
+    // Fallback to static accounts
     const acc = ACCOUNTS[login.trim().toLowerCase()];
     if (!acc)                    { setError("Пользователь не найден"); return; }
     if (acc.password !== password){ setError("Неверный пароль");        return; }
@@ -150,7 +178,7 @@ function LoginScreen({ onLogin }) {
   }
 
   return (
-    <div style={{ minHeight:"100svh", background:COLORS.bg, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", fontFamily:FONT, padding:24 }}>
+    <div style={{ minHeight:"100vh", background:COLORS.bg, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", fontFamily:FONT, padding:24 }}>
       <div style={{ fontSize:36, marginBottom:8 }}>✨</div>
       <div style={{ fontSize:32, fontWeight:900, color:COLORS.text, letterSpacing:-1 }}>CleanHub</div>
       <div style={{ fontSize:13, color:COLORS.muted, marginBottom:36, marginTop:4 }}>Torrevieja · Управление сервисом</div>
@@ -1388,6 +1416,152 @@ function OnboardingView() {
   );
 }
 
+
+// ─── USERS VIEW ───────────────────────────────────────────────────────────────
+function UsersView({ role, users, setUsers }) {
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ name:"", login:"", password:"", role:"cleaner" });
+  const [error, setError] = useState("");
+
+  // What roles can current user manage
+  const canManage = (targetRole) => {
+    if (role === "admin") return targetRole !== "admin";
+    if (role === "manager") return targetRole === "cleaner" || targetRole === "owner";
+    return false;
+  };
+
+  const visibleUsers = role === "admin"
+    ? users
+    : users.filter(u => u.role !== "admin");
+
+  function addUser() {
+    if (!form.name || !form.login || !form.password) { setError("Заполните все поля"); return; }
+    if (users.find(u => u.login === form.login)) { setError("Логин уже занят"); return; }
+    const newUser = {
+      id: form.login,
+      name: form.name,
+      avatar: form.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase(),
+      login: form.login,
+      password: form.password,
+      role: form.role,
+      active: true,
+    };
+    setUsers(p => [...p, newUser]);
+    setForm({ name:"", login:"", password:"", role:"cleaner" });
+    setShowForm(false);
+    setError("");
+  }
+
+  function toggleActive(id) {
+    setUsers(p => p.map(u => u.id === id ? { ...u, active: !u.active } : u));
+  }
+
+  function deleteUser(id) {
+    setUsers(p => p.filter(u => u.id !== id));
+  }
+
+  const roleColors = { admin: COLORS.purple, manager: COLORS.accent, owner: COLORS.green, cleaner: COLORS.orange };
+  const roleLabels = { admin:"Админ", manager:"Менеджер", owner:"Собственник", cleaner:"Исполнитель" };
+
+  const availableRoles = role === "admin"
+    ? ["manager","owner","cleaner"]
+    : ["owner","cleaner"];
+
+  return (
+    <div style={{ fontFamily:FONT, color:COLORS.text }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+        <div style={{ fontSize:20, fontWeight:800 }}>Пользователи</div>
+        {!showForm && (
+          <button onClick={()=>setShowForm(true)} style={{ background:COLORS.accent, color:COLORS.bg, border:"none", borderRadius:10, padding:"8px 16px", fontWeight:700, cursor:"pointer", fontFamily:FONT, fontSize:13 }}>
+            + Добавить
+          </button>
+        )}
+      </div>
+
+      {showForm && (
+        <div style={{ background:COLORS.card, border:`1px solid ${COLORS.cardBorder}`, borderRadius:14, padding:18, marginBottom:20 }}>
+          <div style={{ fontSize:14, fontWeight:700, marginBottom:14 }}>Новый пользователь</div>
+          {[
+            ["Имя", "name", "text", "Иван Иванов"],
+            ["Логин", "login", "text", "ivan"],
+            ["Пароль", "password", "text", "••••"],
+          ].map(([label, key, type, ph]) => (
+            <div key={key} style={{ marginBottom:12 }}>
+              <div style={{ fontSize:11, color:COLORS.muted, marginBottom:4 }}>{label.toUpperCase()}</div>
+              <input type={type} value={form[key]} placeholder={ph}
+                onChange={e => setForm(p=>({...p,[key]:e.target.value}))}
+                style={{ width:"100%", background:COLORS.input, border:`1px solid ${COLORS.cardBorder}`, borderRadius:8, padding:"9px 12px", color:COLORS.text, fontFamily:FONT, fontSize:13, boxSizing:"border-box" }} />
+            </div>
+          ))}
+          <div style={{ marginBottom:12 }}>
+            <div style={{ fontSize:11, color:COLORS.muted, marginBottom:4 }}>РОЛЬ</div>
+            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+              {availableRoles.map(r => (
+                <div key={r} onClick={()=>setForm(p=>({...p,role:r}))} style={{
+                  padding:"7px 14px", borderRadius:20, cursor:"pointer", fontSize:12, fontWeight:600,
+                  background: form.role===r ? `${roleColors[r]}22` : COLORS.input,
+                  border: `1.5px solid ${form.role===r ? roleColors[r] : COLORS.cardBorder}`,
+                  color: form.role===r ? roleColors[r] : COLORS.muted,
+                }}>{roleLabels[r]}</div>
+              ))}
+            </div>
+          </div>
+          {error && <div style={{ color:COLORS.red, fontSize:12, marginBottom:10 }}>⚠ {error}</div>}
+          <div style={{ display:"flex", gap:10 }}>
+            <button onClick={addUser} style={{ background:COLORS.accent, color:COLORS.bg, border:"none", borderRadius:10, padding:"9px 20px", fontWeight:700, cursor:"pointer", fontFamily:FONT, fontSize:13 }}>Создать</button>
+            <button onClick={()=>{setShowForm(false);setError("");}} style={{ background:"none", border:`1px solid ${COLORS.cardBorder}`, color:COLORS.muted, borderRadius:10, padding:"9px 16px", cursor:"pointer", fontFamily:FONT, fontSize:13 }}>Отмена</button>
+          </div>
+        </div>
+      )}
+
+      {/* Group by role */}
+      {["admin","manager","owner","cleaner"].map(r => {
+        const group = visibleUsers.filter(u => u.role === r);
+        if (group.length === 0) return null;
+        return (
+          <div key={r} style={{ marginBottom:24 }}>
+            <div style={{ fontSize:11, fontWeight:700, color:roleColors[r], letterSpacing:1, textTransform:"uppercase", marginBottom:10 }}>
+              {roleLabels[r]} · {group.length}
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              {group.map(u => (
+                <div key={u.id} style={{ background:COLORS.card, border:`1px solid ${u.active?COLORS.cardBorder:COLORS.red+"40"}`, borderLeft:`3px solid ${u.active?roleColors[u.role]:COLORS.red}`, borderRadius:12, padding:"14px 16px", opacity: u.active?1:0.6 }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+                      <div style={{ width:36, height:36, borderRadius:"50%", background:`${roleColors[u.role]}22`, border:`2px solid ${roleColors[u.role]}55`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:700, color:roleColors[u.role] }}>
+                        {u.avatar}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight:700, fontSize:14 }}>{u.name}</div>
+                        <div style={{ fontSize:12, color:COLORS.muted, marginTop:1 }}>
+                          логин: <span style={{ color:COLORS.accent, fontFamily:"monospace" }}>{u.login}</span>
+                          {" · "}пароль: <span style={{ color:COLORS.muted, fontFamily:"monospace" }}>{u.password}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {!u.system && canManage(u.role) && (
+                      <div style={{ display:"flex", gap:6 }}>
+                        <button onClick={()=>toggleActive(u.id)} title={u.active?"Деактивировать":"Активировать"}
+                          style={{ background:"none", border:`1px solid ${COLORS.cardBorder}`, color: u.active?COLORS.orange:COLORS.green, borderRadius:8, padding:"4px 10px", cursor:"pointer", fontFamily:FONT, fontSize:12 }}>
+                          {u.active ? "⏸" : "▶"}
+                        </button>
+                        <button onClick={()=>deleteUser(u.id)} title="Удалить"
+                          style={{ background:"none", border:`1px solid ${COLORS.red}40`, color:COLORS.red, borderRadius:8, padding:"4px 10px", cursor:"pointer", fontFamily:FONT, fontSize:12 }}>
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [session, setSession] = useState(()=>{
@@ -1397,6 +1571,7 @@ export default function App() {
   const [tab, setTab]     = useState("dashboard");
   const [tasks, setTasks] = useState(INITIAL_TASKS);
   const [msgs,  setMsgs]  = useState(INITIAL_MESSAGES);
+  const [users, setUsers] = useState(INITIAL_USERS);
 
   function login(account, role){
     const s={account,role};
@@ -1415,7 +1590,7 @@ export default function App() {
     setTab("dashboard");
   }
 
-  if(!session) return <LoginScreen onLogin={login} />;
+  if(!session) return <LoginScreen onLogin={login} users={users} />;
 
   const { account, role } = session;
   const rm = ROLE_META[role];
@@ -1427,10 +1602,11 @@ export default function App() {
     { id:"objects",   icon:"🏠", label:"Объекты"  },
     { id:"messages",  icon:"💬", label:"Чат"      },
     ...(role!=="owner"?[{id:"supplies",icon:"📦",label:"Склад"}]:[]),
+    ...(role==="admin"||role==="manager"?[{id:"users",icon:"👥",label:"Команда"}]:[]),
   ];
 
   return (
-<div style={{ background:COLORS.bg, minHeight:"100vh", fontFamily:FONT, width:"100%", maxWidth:"100%", margin:"0 auto" }}>
+    <div style={{ background:COLORS.bg, minHeight:"100vh", fontFamily:FONT, maxWidth:480, margin:"0 auto" }}>
       {/* HEADER */}
       <div style={{ position:"sticky", top:0, zIndex:100, background:`${COLORS.bg}ee`, backdropFilter:"blur(12px)", borderBottom:`1px solid ${COLORS.cardBorder}`, padding:"10px 16px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div style={{ fontWeight:900, fontSize:20, color:COLORS.accent, letterSpacing:-0.5 }}>✨ CleanHub</div>
@@ -1455,6 +1631,7 @@ export default function App() {
         {tab==="objects"  &&<ObjectsView account={account} role={role} objects={INITIAL_OBJECTS} tasks={tasks}/>}
         {tab==="messages" &&<MessagesView account={account} role={role} messages={msgs} setMessages={setMsgs}/>}
         {tab==="supplies"    &&<SuppliesView role={role}/>}
+        {tab==="users"       &&<UsersView role={role} users={users} setUsers={setUsers}/>}
       </div>
 
       {/* BOTTOM NAV */}
